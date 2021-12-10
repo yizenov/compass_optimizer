@@ -4,17 +4,17 @@ In case of no selection predicates on base tables, the pre-built sketches are us
 
 The pre-built sketches are build over all the table tuples and built for each join attribute in the JOB workload.
 
-There are 106 pre-built Fast-AGMS sketches (53 different join connections) build for the workload. We already uploaded the pre-built sketches for sketch sizes `11 x 1021` on the `imdb` workload. However one may need to re-create the templates in case of changing sketch sizes by running the queries in [`template-queries`](https://github.com/yizenov/compass_optimizer/tree/main/compass/sketch_templates/template_queries).
+There are 106 pre-built Fast-AGMS sketches (53 different join connections) build for the workload. We already uploaded the pre-built sketches for sketch sizes `11 x 1021` on the `imdb` workload. However one may need to re-create the templates in case of changing sketch sizes by running the queries in [`template-queries`](https://github.com/yizenov/compass_optimizer/tree/master/compass/sketch_templates/template_queries).
 
 
 In order create the pre-build sketches:
 - set `PRE_PROCESSING` to `true`
-- run 53 provided queries in [`template_queries`](https://github.com/yizenov/compass_optimizer/tree/main/compass/sketch_templates/template_queries)
+- run 53 provided queries in [`template_queries`](https://github.com/yizenov/compass_optimizer/tree/master/compass/sketch_templates/template_queries)
 - set the correct paths to the sketch files shown below.
 
 There are two `.txt` files that are read when MapD server starts. `1021` is the bucket size and `11` is the number base sketches.
-- [`sketch_templates_1021_11.txt`](https://github.com/yizenov/compass_optimizer/blob/main/compass/sketch_templates/sketch_templates_1021_11.txt)
-- [`sketch_templates_seeds_1021_11.txt`](https://github.com/yizenov/compass_optimizer/blob/main/compass/sketch_templates/sketch_templates_seeds_1021_11.txt)
+- [`sketch_templates_1021_11.txt`](https://github.com/yizenov/compass_optimizer/blob/master/compass/sketch_templates/sketch_templates_1021_11.txt)
+- [`sketch_templates_seeds_1021_11.txt`](https://github.com/yizenov/compass_optimizer/blob/master/compass/sketch_templates/sketch_templates_seeds_1021_11.txt)
 
 New seeds provide different sketches thus providing different estimations. However the trend shown in the paper are preserved regardless of the sketch seed values.
 
@@ -30,7 +30,7 @@ The seeds are written in the following way:
   - second row seeds correspond to `Xi_CW2B` values.
   - third row seeds correspond to `Xi_EH3` values.
 
-See `uploadSketches` and `saveSketches` methods for details in [`compass/mapd-core/Catalog/Catalog.h`](https://github.com/yizenov/compass_optimizer/blob/main/compass/mapd-core/Catalog/Catalog.h).
+See `uploadSketches` and `saveSketches` methods for details in [`compass/mapd-core/Catalog/Catalog.h`](https://github.com/yizenov/compass_optimizer/blob/master/compass/mapd-core/Catalog/Catalog.h).
 
 # Useful queries to identify/retrieve table ids in MapD:
 select count(\*) from aka_name as an1, aka_name as an2 where an1.id = an2.id; <br/>
