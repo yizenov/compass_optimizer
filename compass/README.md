@@ -86,10 +86,10 @@ Parameters related to GPU for parallel sketch building:
 - warp_size (int8_t) = 32
 
 Parameters related to the join graph enumeration:
-- NODE_TRAVERSE_BOUND = 1. The number of traversals per node in a given join graph. This parameter can be also adjusted in [`compass/mapd-core/QueryEngine/RelAlgExecutor.cpp`](https://github.com/yizenov/compass_optimizer/blob/main/compass/mapd-core/QueryEngine/RelAlgExecutor.cpp).
+- NODE_TRAVERSE_BOUND = 1. The number of traversals per node in a given join graph. This parameter can be also adjusted in [`compass/mapd-core/QueryEngine/RelAlgExecutor.cpp`](https://github.com/yizenov/compass_optimizer/blob/master/compass/mapd-core/QueryEngine/RelAlgExecutor.cpp).
 
 
-You can find all the parameters settings in [`compass/mapd-core/Catalog/Catalog.h`](https://github.com/yizenov/compass_optimizer/blob/main/compass/mapd-core/Catalog/Catalog.h).
+You can find all the parameters settings in [`compass/mapd-core/Catalog/Catalog.h`](https://github.com/yizenov/compass_optimizer/blob/master/compass/mapd-core/Catalog/Catalog.h).
 
 
 # Information about software/package/driver versions:
