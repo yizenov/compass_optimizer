@@ -1,0 +1,48 @@
+
+----------------------------------COMPASS PARAMETERS----------------------------------------------------
+SKETCH (single sketch size = 73 * 1021 * 4 bytes ~ 298 KB of memory)
+    CAT_SKETCH_BUCKETS unsigned = 1021
+    CAT_SKETCH_ROWS unsigned = 73
+
+GPU PARAMETERS
+    grid_size unsigned 26
+    block_size unsigned 1024
+    warp_size int8_t 32
+
+ENUMERATION
+    NODE_TRAVERSE_BOUND unsigned 10     // bound traversing from each node from the join graph
+    SKETCH_SPARSITY_BOUND unsigned CAT_SKETCH_BUCKETS * 0.05    // avoid merging sparse sketches
+
+SELECTION PUSH-DOWN
+    PUSH_DOWN_MIN_TABLE_SIZE_SK unsigned 200    // skip selection push down if the table is too small
+    PUSH_DOWN_MAX_SELECTIVITY_SK float 0.05     // selectivity threshold to whether materialize the intermediate result after selection push down
+    PUSH_DOWN_MAX_SIZE unsigned 10000       // table size threshold to whether materialize the intermediate result after selection push down
+
+To save pre-computed sketch templates for the relations without selection predicates
+PRE_PROCESSING 0 false=0 true=1
+PATH_TO_CATALOG_SK     // point out the right direction to the sketch template file.
+PATH_TO_CATALOG_SEEDS   // point out the right direction to the sketch seed file.
+
+-----------------------------------Mainly changed files to implement COMPASS----------------------------
+Sketches.h
+Catalog.h
+FilterPushDownSketch.cpp/h
+FilterPushDown.cpp
+RelAlgExecutor.cpp/h
+Execute.cpp/h
+GroupByAndAggregate.cpp/h
+RuntimeFunctions.cpp
+cuda_mapd_rt.cu
+---------------------------------Minor changes in these files-------------------------------------------
+Analyzer/Analyzer.cpp/h
+Shared/sqldefs.h
+CalciteDeserializerUtils.cpp/h
+CardinalityEstimator.h
+CMakeLists.txt
+ExecutionDispatch.cpp
+IRCodegen.cpp
+NativeCodegen.cpp
+OutputBufferInitialization.cpp
+RelAlgAbstractInterpreter.cpp
+ResultSetReduction.cpp
+---------------------------------------------------------------------------------------------------------

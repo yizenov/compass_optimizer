@@ -1,0 +1,147 @@
+
+IMDB dataset-----------------------------------------------------------------------------------------------
+21 relations in imdb
+
+table_id | nick name | table name      | size       | columns
+      1  | an        | aka_name        | 901,343    | 7
+      2  | att       | aka_title       | 361,472    | 11
+      26 | ci        | cast_info       | 36,244,344 | 7
+      4  | chn       | char_name       | 3,140,339  | 6
+      6  | cn        | company_name    | 234,997    | 6
+      7  | ct        | company_type    | 4          | 2
+      5  | cct       | comp_cast_type  | 4          | 2
+      25 | cc        | complete_cast   | 135,086    | 4
+      9  | it        | info_type       | 113        | 2
+      10 | k         | keyword         | 134,170    | 3
+      11 | kt        | kind_type       | 7          | 2
+      12 | lt        | link_type       | 18         | 2
+      15 | mk        | movie_keyword   | 4,523,930  | 3
+      16 | ml        | movie_link      | 29,997     | 4
+      23 | n         | name            | 4,167,491  | 8
+      21 | pi        | person_info     | 2,963,664  | 5
+      19 | t         | title           | 2,528,312  | 11
+      13 | mc        | movie_companies | 2,609,129  | 5
+      18 | rt        | role_type       | 12         | 2
+      20 | mi        | movie_info      | 14,835,720 | 5
+      14 | mi_idx    | movie_info_idx  | 1,380,035  | 5
+
+Selection Predicates----------------------------------------------------------------------------------------
+
+    maximum number of selection predicates on a single column: 3
+    maximum number of selection predicates on distinct columns in a single table: 2
+    maximum number of all overall selection predicates on the same table: 4
+        number of selection predicates - 1 :: 540 queries
+        number of selection predicates - 2 :: 84 queries
+        number of selection predicates - 3 :: 5 queries
+
+    types of selection predicates:
+        string '', '()', '[]'
+        =,>,<>, >=
+        LIKE, NOT LIKE '%()%' '%%' '%' '__%__%' (LIKE '%()%')
+        AND, (1 OR 2), (1 OR (2 AND 3))
+        IS NULL, IS NOT NULL, <> '', != ''
+        BETWEEN 1 AND 2
+        IN ()
+
+    195 distinct selections from 113 queries
+    723 single selections from 113 queries
+    629 multi selections from 113 queries
+        <= 10 303 selections
+        <= 100 14 selections
+        <= 1,000 6 selections
+        <= 10,000 41 selections
+        <= 100,000 82 selections
+        <= 1,000,000 105 selections
+        <= 10,000,000 78 selections
+
+JOB Benchmark------------------------------------------------------------------------------------------------
+    Equi-joins only
+    113 queries in the workload
+    there are cycled queries
+
+    node with the maximum number of connection a single query: ci (29b, 10 connections)
+    node with the maximum number of distinct columns used in join predicates: ci (4 distinct columns)
+
+    query with maximum number of joins (query families): 28(29a-b-c) is maximum
+        4-9 joins queries (12 families, 45 queries) : 1,2,3,4,5,6,8,9,10,17,18,32
+        10-19 joins queries (16 families, 53 queries) : 7,11,12,13,14,15,16,19,20,21,22,23,24,25,26,33
+        20-28 joins queries (5 families, 15 queries) : 27,28,29,30,31
+
+    duplicate join connections: 32a-b
+
+    number of final tuples:
+    queries (10) with =0 : 2c, 5a,b, 10b, 14b, 22b, 32a, 33a,b,c (2c, 5a-b, 10b, 32a -- original)
+    queries (12) with <10 : 1c, 3b, 4b,c 6a,c,e 8b, 14a, 18b, 25b, 28c
+    queries (27) with <100 : 1b,d 10c 12b 6b 29b 19b 23b 26b 7b 20b 11b 30b 7a 4a 20a 15b 21b 9b 28b 14c 24b 13c 8a 12a 31b 6d
+    queries (22) with <1000 : 10a 9a 22a 1a 22c 19a 28a 3a 26a 22d 27b 15a 13b 16a 11a 18a 23a 23c 27a 5c 12c 30a
+    queries (39) with >1000 : 27c 29a 21a 17c 15c 21c 19c 32b 25a 2b 26c 20c 11c 3c 2a 30c 9c 15d 17d 11d 29c 25c 18c 17b 7c 2d
+    	13a 16d 17a 16c 8d 9d 13d 6f 17f 19d 8c 17e 16b
+
+    VERY SLOW queries MapD: 24a, 29a-b-c, 31a-b-c
+    VERY SLOW queries COMPASS: 24a, 31a-c
+    SLOW queries COMPASS: 29c, 30a,c
+
+two instances of the same table (query families):
+    it1, it2: 12,13,14,18,22,25,28,29,30,31,33
+    cct1, cct2: 20,26,27,28,29,30
+    t1, t2: 32,33
+    cn1, cn2: 33
+    kt1, kt2: 33
+    mc1, mc2: 33
+    mi_idx1, mi_idx2: 33
+-------------------------------------------------------------------------------------------------------------
+a-b :: 24,32
+a-b-c :: 3,4,5,7,10,12,14,18,20,21,23,25,26,27,28,29,30,31,33
+a-b-c-d :: 1,2,8,9,11,13,15,16,19,22
+a-b-c-d-e-f :: 6,17
+
+NECESSARY CHANGES
+---------------------------------------------------MAPD------------------------------------------------------
+add----
+	(mc.note NOT LIKE '%(Metro-Goldwyns)%' OR mc.note IS NULL) :: 1d,c,b,a 5c, 8b,a 22c,b,a 28c,b,a
+
+change > to = ----
+	mi_idx.info = '2.0' :: 4c,b,a 14a,b,c 12c,a 18b 22d,c,b,a 26a,b 28c,b,a 33c,b,a
+change != to NOT IN () ---- (bug: MapD gives correct tuples only from second run)
+	cn.country_code !='[pl]' :: 11d,c,b,a 21c,b,a 22d,c,b,a 27c,b,a 28c,b,a 33c
+	ct.kind !='production companies' :: 11d,c
+	cct.kind !='complete+verified' :: 28b,a
+change != to IS NOT NULL
+	t.title != '' 13b,c
+
+delete----
+	mk.movie_id = t1.id :: 32b,a (duplicate join, was added by mistake)
+	'sequel' from lt.link IN ('sequel', 'follows', 'followed by') :: 33c,a ---> causes zero tuple output (MapD crashes)
+
+schema change----
+	rt.role -> rt.role_t :: 8d,c,b,a 10b,a 9d,c,b,a 19d,c,b,a 24b,a 29c,b,a ---> (MapD crashes)
+
+nick names changes----
+	at -> att :: 15d,c,b,a ---> (MapD crashes)
+	it1 -> it :: 15d,c,b,a 13d,c,b,a 23c,b,a
+	it2 -> it :: 26c,b,a
+	it,it3 -> it1,it2 :: 29c,b,a
+	miidx -> mi_idx :: 13d,c,b,a
+	cct1 -> cct :: 23c,b,a
+	n1 -> n :: 8d,c,a
+	an1 -> an :: 8d,c,a
+---------------------------------------------------POSTGRES------------------------------------------------
+
+MapD uses <> instead of !=
+Postgres != or <> ??
+mi.note IS NULL :: 18b (3 tuples difference, 11464031 MapD and 11464034 Postgres)
+    (but in 18b two predicates on mi, final survived tuples after two predicates together is the same)
+
+schema change----
+	rt.role -> rt.role_t :: 10b-a, 9d-c-b-a 8d-c-b-a 19d-c-b-a 24a-b 29c-b-a
+	mi_idx.info = '2.0' :: 4c-b-a 14c-b-a 12c-a 18b 22d-c-b-a 28c-b-a 26b-a 33c-b-a
+
+	mc.note IS NOT NULL -> mc.note != '' :: 9a 11d-c 19a
+	mc.note IS NULL -> mc.note = '' 11b-a 21c-b-a 27c-b-c
+	t.title != '' -> t.title <> '' :: 13c-b
+
+	cn.country_code != '[pl]' -> cn.country_code <> '[pl]' :: 11d-c-b-a 21c-b-a 22d-c-b-a 28c-b-a 27c-b-c 33c
+  	ct.kind != 'production companies' -> ct.kind <> 'production companies' :: 11d-c
+	cct2.kind != 'complete+verified' -> cct2.kind <> 'complete+verified' :: 28b-a
+
+-----------------------------------------------------------------------------------------------------------

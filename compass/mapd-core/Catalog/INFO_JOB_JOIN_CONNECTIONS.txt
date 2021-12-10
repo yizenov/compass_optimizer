@@ -1,0 +1,185 @@
+
+----------------------join column ids----------------------------------------
+
+    -id{all ones}, -movie_id{2,2,2,2,3,2,2,2}
+    -person_id{2,2,2}, -info_type_id{3,3,3}
+    -linked_movie_id{3}, -role_id{7}, -person_role_id{4}
+    -kind_id{4}, -keyword_id{3}, -link_type_id{4}
+    -company_type_id{4}, -company_id{3}, -subject_id{3}, -status_id{4}
+
+join-column relations:
+    id :: t cct cn lt kt n chn k ct it rt
+    movie_id :: ml mk mi_idx mc ci cc att mi
+    info_type_id :: mi_idx pi mi
+    person_id :: an ci pi
+    company_id :: mc
+    company_type_id :: mc
+    keyword_id :: mk
+    linked_movie_id :: ml
+    link_type_id :: ml
+    role_id :: ci
+    person_role_id :: ci
+    kind_id :: t
+    subject_id :: cc
+    status_id :: cc
+
+join-column relations with distinct values:
+    id :: t(2,528,312) cct(4) cn(234,997) lt(18) kt(7) n(4,167,491) chn(3,140,339) k(134,170) ct(4) it(113) rt(12)
+    movie_id :: ml(6,411) mk(476,794) mi_idx(459,925) mc(1,087,236) ci(2,331,601) cc(93,514) att(205,631) mi(2,468,825)
+    info_type_id :: mi_idx(5) pi(22) mi(71)
+    person_id :: an(588,222) ci(4,051,810) pi(550,721)
+    company_id :: mc(234,997)
+    company_type_id :: mc(2)
+    keyword_id :: mk(134,170)
+    linked_movie_id :: ml(16,169)
+    link_type_id :: ml(16)
+    role_id :: ci (11)
+    person_role_id :: ci(3,140,340)
+    kind_id :: t(6)
+    subject_id :: cc(2)
+    status_id :: cc(2)
+
+-------------------join templates ----------------------------------------------------
+212 templates are created
+    106 both no selection predicates
+    106 either side has no selection predicate
+
+an.person_id = n.id
+an.person_id = ci.movie_id
+an.person_id = pi.person_id
+
+n.id = pi.person_id
+n.id = ci.person_id
+n.id = an.person_id
+
+pi.info_type_id = it+++it2.id
+pi.person_id = an.person_id
+pi.person_id = n.id
+pi.person_id = ci.person_id
+
+it.id = pi.info_type_id
+it.id = mi.info_type_id
+it.id = mi_idx.info_type_id
+it1/2.id = mi_idx1/2.info_type_id
+
+rt.id = ci.role_id
+
+chn.id = ci.person_role_id
+
+ci.person_role_id = chn.id
+ci.role_id = rt.id
+ci.person_id = an.person_id
+ci.person_id = n.id
+ci.person_id = pi.person_id
+ci.movie_id = t.id
+ci.movie_id = mk.movie_id
+ci.movie_id = ml.linked_movie_id
+ci.movie_id = mc.movie_id
+ci.movie_id = mi.movie_id
+ci.movie_id = mi_idx.movie_id
+ci.movie_id = cc.movie_id
+
+t.kind_id = kt.id
+t1/2.kind_id = kt1/2.id
+t.id = mc.movie_id
+t1/2.id = mc1/2.movie_id
+t.id = ci.movie_id
+t.id = mi.movie_id
+t.id = at.movie_id
+t.id = mi_idx.movie_id
+t1/2.id = mi_idx1/2.movie_id
+t+++t1.id = mk.movie_id
+t+++t2.id = ml.linked_movie_id
+t+++t1.id = ml.movie_id
+t.id = cc.movie_id
+
+kt.it = t.kind_id
+kt1/2.id = t1/2.kind_id
+
+mk.keyword_id = k.id
+mk.movie_id = ci.movie_id
+mk.movie_id = mi.movie_id
+mk.movie_id = at.movie_id
+mk.movie_id = t+++t1.id
+mk.movie_id = mc.movie_id
+mk.movie_id = mi_idx.movie_id
+mk.movie_id = ml.movie_id
+mk.movie_id = cc.movie_id
+
+k.id = mk.keyword_id
+
+ml.link_type_id = lt.id
+ml.linked_movie_id = ci.movie_id
+ml.linked_movie_id = t+++t2.id
+ml.linked_movie_id = mc2.movie_id
+ml.linked_movie_id = mi_idx2.movie_id
+ml.movie_id = mc+++mc1.movie_id
+ml.movie_id = t+++t1.id
+ml.movie_id = mi.movie_id
+ml.movie_id = mk.movie_id
+ml.movie_id = mi_idx1.movie_id
+ml.movie_id = cc.movie_id
+
+lt.id = ml.link_type_id
+
+mc.company_type_id = ct.id
+mc.company_id = cn.id
+mc1/2.company_id = cn1/2.id
+mc.movie_id = ci.movie_id
+mc.movie_id = mi.movie_id
+mc.movie_id = at.movie_id
+mc.movie_id = t.id
+mc1/2.movie_id = t1/2.id
+mc.movie_id = mi_idx.movie_id
+mc1/2.movie_id = mi_idx1/2.movie_id
+mc.movie_id = mk.movie_id
+mc+++mc1.movie_id = ml.movie_id
+mc2.movie_id = ml.linked_movie_id
+mc.movie_id = cc.movie_id
+
+ct.id = mc.company_type_id
+
+cn.id = mc.company_id
+cn1/2.id = mc1/2.company_id
+
+mi.info_type_id = it+++it1+++it2.id
+mi.movie_id = ci.movie_id
+mi.movie_id = t.id
+mi.movie_id = mk.movie_id
+mi.movie_id = mc.movie_id
+mi.movie_id = mi_idx.movie_id
+mi.movie_id = at.movie_id
+mi.movie_id = ml.movie_id
+mi.movie_id = cc.movie_id
+
+mi_idx.info_type_id = it+++it1+++it2.id
+mi_idx1/2.info_type_id = it1/2.id
+mi_idx.movie_id = ci.movie_id
+mi_idx.movie_id = mi.movie_id
+mi_idx.movie_id = t.id
+mi_idx1/2.movie_id = t1/2.id
+mi_idx.movie_id = mc.movie_id
+mi_idx1/2.movie_id = mc1/2.movie_id
+mi_idx.movie_id = mk.movie_id
+mi_idx.movie_id = cc.movie_id
+mi_idx1.movie_id = ml.movie_id
+mi_idx2.movie_id = ml.linked_movie_id
+
+cc.subject_id = cct1.id
+cc.status_id = cct+++cct2.id
+cc.movie_id = ci.movie_id
+cc.movie_id = mi.movie_id
+cc.movie_id = t.id
+cc.movie_id = mc.movie_id
+cc.movie_id = mk.movie_id
+cc.movie_id = mi_idx.movie_id
+cc.movie_id = ml.movie_id
+
+cct1.id = cc.subject_id
+cct+++cct2.id = cc.status_id
+
+at.movie_id = mi.movie_id
+at.movie_id = t.id
+at.movie_id = mk.movie_id
+at.movie_id = mc.movie_id
+----------------------------------------------------
