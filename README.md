@@ -8,7 +8,10 @@ The extended version is available in the [arXiv.org](https://arxiv.org/abs/2102.
 
 [Section 2](https://github.com/yizenov/compass_optimizer/tree/master/imdb_data). A snapshot of [Internet Movie Data Base (IMDB)](https://www.imdb.com/) from May 2013 has been used in the evaluation. </br>
 
-[Section 3](https://github.com/yizenov/compass_optimizer/tree/master/job_workload). COMPASS and four other well-known database systems have been evaluated on [Join Order Benchmark(JOB)](http://www-db.in.tum.de/~leis/qo/job.tgz). The JOB consists of 113 queries including 33 query families that each family differ only in selection predicates. </br>
+[Section 3](https://github.com/yizenov/compass_optimizer/tree/master/job_workload). COMPASS and four other well-known database systems have been evaluated on [Join Order Benchmark(JOB)](http://www-db.in.tum.de/~leis/qo/job.tgz). The JOB consists of 113 queries including 33 query families that each family differs only in selection predicates. </br>
+
+# Reproducing results and figures
+Follow the detailed instructions from [instructions.pdf](https://github.com/yizenov/compass_optimizer/blob/master/instructions.pdf). </br>
 
 # Contacts
 If you have questions, please contact:
